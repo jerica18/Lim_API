@@ -1,0 +1,99 @@
+*{
+
+}
+
+body{
+    background: linear-gradient(105deg, #6a11cb, #2575fc);
+    color: white; 
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    justify-content: center;
+    padding: 20px; 
+    margin-top: 2rem; 
+}
+
+header{
+    display: flex;
+    align-items: center;
+    gap: 8rem;
+    margin-bottom: 2rem;
+}
+
+button{
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px; 
+    border: none;
+    background: linear-gradient(135deg, #00f0ff, #00c0ff);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s; 
+}
+
+.logoutButton
+{
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 12px; 
+    border: none;
+     text-decoration: none; 
+    background: linear-gradient(135deg, #00f0ff, #00c0ff);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input, select {
+    padding: 10px;           
+    margin: 10px 0;         
+    border-radius: 12px;    
+    border: 1px solid #ccc; 
+    box-sizing: border-box;  
+    font-size: 16px;
+}
+
+input{
+    margin-right: 1rem;
+}
+
+select{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 20px; 
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+}
+
+td button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    cursor: pointer;
+}
+
+td button:hover {
+    opacity: 0.9;
+}
+

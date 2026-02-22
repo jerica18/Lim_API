@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <h1>Student Management</h1>
+        <a href="LogIn.html" class="logoutButton">Logout</a>
+    </header>    
+
+    <form id="studentForm">
+        <input type="text" id="fname" name="fname" placeholder="Name" required>
+
+        <select name="course" id="course" required>
+            <option value="" disabled selected>Select course</option>
+            <option value="BSIT">BSIT</option>
+            <option value="BSBA">BSBA</option>
+            <option value="BSED">BSED</option>
+        </select> 
+
+        <select name="year" id="year" required>
+            <option value="" disabled selected>Select Year</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <button id="Submit" type="submit">Add Student</button>
+    </form>
+    
+    <hr>
+
+   <table id="studentsTable" border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+const apiUrl = "http://localhost:3000/students";
+let editId = null; 
+
+const submitBtn = document.querySelector("#studentForm button");
+
+function loadStudents() {
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector("#studentsTable tbody");
+      tbody.innerHTML = "";
+      data.forEach(s => {
+        tbody.innerHTML += `
+          <tr data-id="${s.id}">
+            <td>${s.name}</td>
+            <td>${s.course}</td>
+            <td>${s.year}</td>
+            <td>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      document.querySelectorAll(".edit").forEach(btn => btn.onclick = handleEdit);
+      document.querySelectorAll(".delete").forEach(btn => btn.onclick = handleDelete);
+    })
+    .catch(err => console.error(err));
+}
+
+
+document.getElementById("studentForm").onsubmit = e => {
+  e.preventDefault();
+  const name = document.getElementById("fname").value;
+  const course = document.getElementById("course").value;
+  const year = document.getElementById("year").value;
+
+  if (editId) {
+   
+    fetch(`${apiUrl}/${editId}`, {
+      method: "PUT",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({name, course, year})
+    }).then(() => {
+      editId = null;
+      submitBtn.textContent = "Add Student";
+      document.getElementById("studentForm").reset();
+      loadStudents();
+    });
+  } else {
+    
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({name, course, year})
+    }).then(() => {
+      document.getElementById("studentForm").reset();
+      loadStudents();
+    });
+  }
+};
+
+
+function handleEdit(e) {
+  const tr = e.target.closest("tr");
+  editId = tr.dataset.id; 
+  document.getElementById("fname").value = tr.children[0].textContent;
+  document.getElementById("course").value = tr.children[1].textContent;
+  document.getElementById("year").value = tr.children[2].textContent;
+  submitBtn.textContent = "Update";
+}
+
+
+function handleDelete(e) {
+  const tr = e.target.closest("tr");
+  const id = tr.dataset.id;
+  if (confirm("Are you sure you want to delete this student?")) {
+    fetch(`${apiUrl}/${id}`, { method: "DELETE" }).then(() => loadStudents());
+  }
+}
+
+
+loadStudents();
+</script>
+
+</body>
+</html>
